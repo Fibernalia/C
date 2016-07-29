@@ -1,0 +1,91 @@
+p = 115792089210356248762697446949407573530086143415290314195533631308867097853951
+a = -3
+b = 0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b
+orden = 115792089210356248762697446949407573529996955224135760342422259061068512044369
+punto = (0xefaad7b2d849232c258a69a9644a7e6a1e863542b46f6187a435af7a72239707,0x153eb740003dfac40f045f6a973f853f1c98a59f19b93acadd660d04c8d1c097)
+Px = punto[0]
+Py = punto[1]
+Gx = 0x6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296
+Gy = 0x4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5
+mod(Py**2,p)-mod(Px**3+a*Px+b,p)
+mod(Gy**2,p)-mod(Gx**3+a*Gx+b,p)
+Zp = Zmod(p)
+E = EllipticCurve(Zp,[a,b])
+G = E([Gx,Gy])
+P = E([Px,Py])
+orden*G
+2*P+G
+
+# a)
+dni = '53322235'
+dniConcatenado = int(dni * 8)
+clavePublica = G * dniConcatenado
+print("clavePublica")
+clavePublica
+
+# b)
+# (dni,y) ∈ E(Zp)
+# y^2 = x^3 + ax + b mod p
+# si (x^3 + ax + b)^((p-1)/2) ≡ 1 mod p --> y ≡ ± (x^3 + ax + b)^((p+1)/4) mod p
+dni = 53322235
+aux = mod((dni**3) + (a*dni) + b, p)
+aux2 = mod(aux^((p-1)/2) , p)
+aux2
+clavePrivada = mod(aux^((p+1)/4), p)
+print("clavePrivada")
+clavePrivada
+
+# c)
+# Para firmar un mensaje m se realizan los siguientes pasos:
+# Elige k ∈ [2,n-1] aleatorio
+k = randint(2,orden-1)
+# Calcula kP = (x1,y1) y r = x1 mod n. Si r = 0 se elige otro k
+kP = k * P
+x1 = kP[0]
+r = mod(x1,orden)
+# Calcula k^-1 mod n
+kinv = inverse_mod(k,orden)
+# Calcula s = k^-1 (SHA(m) + dr) mod n. Si s = 0 se toma otro k. SHA(m) = dni, d = clave privada
+s = mod(kinv * (dni + dniConcatenado * r), orden)
+# La firma es el par (r,s)
+firma = (r,s)
+print("firma = (r,s)")
+firma
+# Para verificar que la firma (r,s) del mensaje m es de A se realizan los siguientes pasos:
+# Calcula w = s^-1 mod n
+w = mod(s^-1, orden)
+# Calcula u1 = SHA(m) w mod n
+u1 = mod(dni * w, orden)
+# Calcula u2 = r w mod n
+u2 = mod(r * w, orden)
+# Calcula u1P + u2Q = (x0,y0) y v = x0 mod n. Q = dP
+aux = Integer(u1)*P + Integer(u2)*(dniConcatenado*P)
+v = mod(aux[0], orden)
+# La firma es válida si v = r
+v
+
+# d)
+# s = k^-1 (SHA(m) + dr) mod n --> d = ((sk - dni) * r^-1) mod n
+k = dni
+kP = k * P
+x1 = kP[0]
+r = mod(x1,orden)
+rinv = Integer(r).inverse_mod(orden)
+claveSecreta = mod(((s*k - dni) * rinv), orden)
+print("claveSecreta")
+claveSecreta
+
+0
+0
+(0 : 1 : 0)
+(67779888045318211076364772926852911374859993158840023910034419228097849514505 : 32201432161964968205101431402520861204516166394200316593151611652898715641198 : 1)
+clavePublica
+(96227902644649388535454360892810700446378411970942418371451984500367241503263 : 88036023167814039954169922829879662676032890975487468390788404715352276496717 : 1)
+1
+clavePrivada
+74308321675796490408875538050616238093482524844266330398661639768310977960147
+firma = (r,s)
+(62348960026294644672615750769463865811768101193100049962765424834063662893410, 89506421850091735171021487646268684133554178562663043598295643800434287131393)
+62348960026294644672615750769463865811768101193100049962765424834063662893410
+claveSecreta
+24956562947446726434714882607898092245094014685974636838267006551726139858778

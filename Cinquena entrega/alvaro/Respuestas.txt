@@ -1,0 +1,43 @@
+1.
+
+(Todos los cálculos en sagemath se encuentran en otro fichero)
+
+Sitio web: www.facebook.com
+Clave pública de curva elíptica
+Curva elíptica ANSI X9.62 prime256v1 (o secp256r1, NIST P-256)
+
+Punto = (0xd8d1dd35bde259b6fb9b1f54158cdbbf4e58bd47beb810fc22e9d29e98f8492a, 0x25fb9446e4429984501c5f01fd1425315c4ed964fdc50cb346d2a1bc70b4878e)
+
+a)
+
+(11066367667441842855564828842575776747090609134873622801101648341837249820649 : 96602370973501661720325893082900267481097197212953552113209118330215599548004 : 1)
+
+b)
+
+No existe una clave pública que tenga por primera componente mi DNI. Si añado dos ceros, sí.
+
+72041471805867407663458649257538538305428056981023124296987171886798809157442
+
+c)
+
+(112907466997748256795008599422883279420406549566778416623300243644631760365948, 49083044504339136298990455002623110132998615580971565257402302217348925263737)
+
+d)
+
+51463684800121650059581361023648140227949981490950433829952637689651139345869
+
+2.
+
+a)
+
+Punto de distribución de la CRL: http://crl4.digicert.com/sha2-ha-server-g5.crl
+
+Certificados revocados: 4238
+
+b)
+
+openssl ocsp -issuer DigiCertSHA2HighAssuranceServerCA.crt -cert facebook.crt -url http://ocsp.digicert.com -text
+
+Cert Status: good
+
+(La salida completa del terminal se encuentra en otro fichero)

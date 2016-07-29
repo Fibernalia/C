@@ -1,2 +1,8 @@
 # C
-C - Criptografia, FIB - Facultad de Informática de Barcelona
+Álvaro Martínez Arroyo
+
+Daniel García Romero
+
+Robert Almar Graupera
+
+Nota: 9,6
